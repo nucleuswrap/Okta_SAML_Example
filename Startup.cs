@@ -1,19 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using ITfoxtec.Identity.Saml2;
+using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
+using ITfoxtec.Identity.Saml2.Schemas.Metadata;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-//SAML
-using ITfoxtec.Identity.Saml2;
-using ITfoxtec.Identity.Saml2.Schemas.Metadata;
-using ITfoxtec.Identity.Saml2.MvcCore.Configuration;
-//END SAML
 
 namespace Okta_SAML_Example
 {
@@ -31,7 +26,7 @@ namespace Okta_SAML_Example
         {
             services.AddRazorPages();
 
-            //SAML
+
             services.Configure<Saml2Configuration>(Configuration.GetSection("Saml2"));
 
             services.Configure<Saml2Configuration>(saml2Configuration =>
@@ -43,7 +38,6 @@ namespace Okta_SAML_Example
                 if (entityDescriptor.IdPSsoDescriptor != null)
                 {
                     saml2Configuration.SingleSignOnDestination = entityDescriptor.IdPSsoDescriptor.SingleSignOnServices.First().Location;
-                    //saml2Configuration.SingleLogoutDestination = entityDescriptor.IdPSsoDescriptor.SingleLogoutServices.First().Location;
                     saml2Configuration.SignatureValidationCertificates.AddRange(entityDescriptor.IdPSsoDescriptor.SigningCertificates);
                 }
                 else
@@ -53,7 +47,7 @@ namespace Okta_SAML_Example
             });
 
             services.AddSaml2();  
-            //END SAML
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
